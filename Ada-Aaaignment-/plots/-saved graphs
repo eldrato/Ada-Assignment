@@ -1,0 +1,113 @@
+#task 2 graph plotings 
+
+import time
+import matplotlib.pyplot as plt
+import random
+
+
+# Search Algorithm Implementations
+
+
+def linear_search(arr, key):
+    for i in range(len(arr)):
+        if arr[i] == key:
+            return i
+    return -1
+
+def binary_search(arr, key):
+    low = 0
+    high = len(arr) - 1
+    
+    while low <= high:
+        mid = (low + high) // 2
+        
+        if arr[mid] == key:
+            return mid
+        elif arr[mid] < key:
+            low = mid + 1
+        else:
+            high = mid - 1
+    return -1
+
+
+# Experiment Setup
+
+
+input_sizes = [100, 500, 1000, 5000]
+
+linear_best = []
+linear_avg = []
+linear_worst = []
+
+binary_best = []
+binary_avg = []
+binary_worst = []
+
+for n in input_sizes:
+    
+    # Generate sorted random array
+    arr = sorted(random.sample(range(n * 10), n))
+    
+    
+    # Linear Search
+   
+    
+    # Best Case (first element)
+    start = time.time()
+    linear_search(arr, arr[0])
+    linear_best.append(time.time() - start)
+    
+    # Average Case (middle element)
+    start = time.time()
+    linear_search(arr, arr[n // 2])
+    linear_avg.append(time.time() - start)
+    
+    # Worst Case (element not present)
+    start = time.time()
+    linear_search(arr, -1)
+    linear_worst.append(time.time() - start)
+    
+    
+   
+    # Binary Search
+ 
+    
+    # Best Case (middle element)
+    start = time.time()
+    binary_search(arr, arr[n // 2])
+    binary_best.append(time.time() - start)
+    
+    # Average Case (random element)
+    start = time.time()
+    binary_search(arr, arr[random.randint(0, n - 1)])
+    binary_avg.append(time.time() - start)
+    
+    # Worst Case (element not present)
+    start = time.time()
+    binary_search(arr, -1)
+    binary_worst.append(time.time() - start)
+
+
+# Plot Linear Search
+
+
+plt.figure()
+plt.plot(input_sizes, linear_best)
+plt.plot(input_sizes, linear_avg)
+plt.plot(input_sizes, linear_worst)
+plt.xlabel("Input Size (n)")
+plt.ylabel("Execution Time (seconds)")
+plt.title("Linear Search - Best, Average, Worst Case")
+plt.show()
+
+# Plot Binary Search
+
+
+plt.figure()
+plt.plot(input_sizes, binary_best)
+plt.plot(input_sizes, binary_avg)
+plt.plot(input_sizes, binary_worst)
+plt.xlabel("Input Size (n)")
+plt.ylabel("Execution Time (seconds)")
+plt.title("Binary Search - Best, Average, Worst Case")
+plt.show()
